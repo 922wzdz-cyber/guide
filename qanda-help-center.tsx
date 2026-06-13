@@ -974,4 +974,3 @@ function QSlide({ b }) {
     </div>
   );
 }
-export default QandaHelpCenter;
