@@ -1,5 +1,5 @@
 import { useState, useMemo, useRef, Fragment } from "react";
-import { Search, ChevronDown, ChevronLeft, ChevronRight, MessageCircle, Phone, Clock, Lightbulb, AlertTriangle, Check, ExternalLink } from "lucide-react";
+import { Search, ChevronDown, ChevronLeft, ChevronRight, MessageCircle, Phone, Clock, Lightbulb, AlertTriangle, Check, ExternalLink, MousePointer2, Hand, Pencil, Square, Eraser, Type, Plus, Undo2 } from "lucide-react";
 
 const BRAND = "#F25C05";
 const BRAND_SOFT = "#FFF1EA";
@@ -286,11 +286,12 @@ function Mock({ name }) {
     case "cancel": return (<MiniScreen label="정기 결제"><div className="flex items-center justify-between mb-1.5"><span className="text-[10px] font-bold text-slate-700">중등 수학</span><span className="text-[8px] font-bold px-2 py-0.5 rounded" style={{backgroundColor:BRAND_SOFT,color:BRAND}}>해지하기</span></div><div className="text-[9px] font-bold mb-1.5"><span style={{color:BRAND}}>0</span> <span className="text-slate-500">/ 0회</span></div><div className="rounded-lg p-1.5" style={{backgroundColor:PANEL}}><div className="text-[8px] text-slate-500 leading-relaxed">정기 결제 예정일은 수업 일정에 따라 달라져요.</div></div></MiniScreen>);
     case "refund": return (<MiniScreen label="환불"><div className="flex items-center justify-center gap-1 py-3"><span className="text-base font-extrabold" style={{color:BRAND}}>₩</span><span className="text-[11px] font-bold text-slate-600">남은 횟수만큼 환불</span></div><div className="text-[8px] text-slate-400 text-center">환불 신청은 고객센터로 접수해요</div></MiniScreen>);
     case "material": return (<MiniScreen label="수업장 · 자료 불러오기"><div className="flex items-center gap-1 border-b border-slate-100 pb-1.5 mb-2"><span className="text-slate-300 text-[9px]">⇤</span><div className="flex gap-1 ml-1">{Array.from({length:8}).map((_,i)=><div key={i} className="w-3.5 h-3.5 rounded-sm" style={{backgroundColor:i===2?"#D8DEE6":"#F1F3F6"}}/>)}</div></div><div className="flex items-start gap-2"><div className="w-7 h-7 rounded-md flex items-center justify-center text-white text-sm flex-shrink-0" style={{backgroundColor:BRAND}}>+</div><div className="flex-1 rounded-lg border border-slate-100 overflow-hidden">{[["📄","새 페이지"],["▦","줄 및 격자 페이지"],["📁","파일 업로드"],["🗂️","파일 관리자 열기"]].map((t,i)=>(<div key={i} className="flex items-center gap-1.5 text-[9px] text-slate-600 px-2 py-1.5 border-b border-slate-50 last:border-0"><span>{t[0]}</span><span>{t[1]}</span></div>))}</div></div></MiniScreen>);
-    case "tools": return (<MiniScreen label="수업장 · 필기 도구"><div className="flex items-center gap-0.5 border-b border-slate-100 pb-1.5 mb-2 justify-between">{["▸","✋","✎","▭","⌫","⊞","T","🔗"].map((t,i)=>(<div key={i} className="w-4 h-4 rounded-sm flex items-center justify-center text-[8px]" style={{backgroundColor:i===2?"#D8DEE6":"transparent",color:"#475569"}}>{t}</div>))}</div><div className="flex gap-1.5 mb-2">{["✎","🖊","✦"].map((t,i)=><div key={i} className="w-5 h-5 rounded-md flex items-center justify-center text-[9px]" style={{backgroundColor:i===0?"#D8DEE6":"#F1F3F6"}}>{t}</div>)}</div><div className="grid grid-cols-6 gap-1">{["#2E3742","#E2E6EC","#EC6A5E","#5B8DEF","#F2C94C","#1A1A1A","#FFE34D","#16C7C0","#7A5230","#F2A9B8","#7FD3F7"].map((c,i)=>(<div key={i} className="w-3.5 h-3.5 rounded-full border border-black/10" style={{backgroundColor:c}}/>))}</div></MiniScreen>);
+    case "tools": return (<MiniScreen label="수업장 · 필기 도구"><div className="flex items-center justify-between gap-0.5 rounded-lg px-1.5 py-1 mb-2.5" style={{backgroundColor:"#F4F6F8"}}>{[MousePointer2,Hand,Pencil,Square,Eraser,Type,Plus,Undo2].map((Ico,i)=>(<div key={i} className="w-5 h-5 rounded-md flex items-center justify-center" style={{backgroundColor:i===2?"#fff":"transparent",boxShadow:i===2?"0 1px 2px rgba(0,0,0,0.15)":"none"}}><Ico className="w-3 h-3" strokeWidth={2} style={{color:i===2?BRAND:"#64748B"}}/></div>))}</div><div className="flex items-center justify-between gap-3"><div className="flex-1"><div className="text-[8px] font-bold text-slate-400 mb-1">펜 굵기</div><div className="flex items-center gap-2">{[3,5,7].map((d,i)=>(<div key={i} className="rounded-full" style={{width:d,height:d,backgroundColor:i===1?BRAND:"#CBD3DD"}}/>))}</div></div><div className="flex-1"><div className="text-[8px] font-bold text-slate-400 mb-1">색상</div><div className="flex gap-1">{["#2E3742","#EC6A5E","#5B8DEF","#F2C94C","#16C172","#1A1A1A"].map((c,i)=>(<div key={i} className="w-3.5 h-3.5 rounded-full" style={{backgroundColor:c,outline:i===0?`2px solid ${BRAND}`:"1px solid rgba(0,0,0,0.08)",outlineOffset:i===0?1:0}}/>))}</div></div></div></MiniScreen>);
     case "error": return (<MiniScreen label="오류 해결"><div className="space-y-1"><Row t="앱 종료 후 재실행" /><Row t="최신 버전 업데이트" /><Row t="와이파이 재연결" /></div><div className="rounded-lg p-1.5 mt-2 flex items-center gap-1.5" style={{backgroundColor:BRAND_SOFT}}><span className="text-xs">📸</span><span className="text-[8px] font-bold" style={{color:BRAND}}>화면 캡처·녹화 후 고객센터 문의</span></div></MiniScreen>);
     case "account": return (<MiniScreen label="내 정보"><div className="flex justify-end mb-1"><span className="text-[8px] text-slate-400">로그아웃</span></div><div className="flex items-center gap-2 mb-2"><div className="w-9 h-9 rounded-full flex items-center justify-center" style={{backgroundColor:BRAND_SOFT}}><span className="text-base">🧑‍🎓</span></div><div><div className="text-[10px] font-bold text-slate-700">김콴다</div><div className="text-[8px] text-slate-400">G · Google 로그인</div></div></div><div className="space-y-1"><div className="rounded-lg border border-slate-100 px-2 py-1.5 flex items-center justify-between"><div><div className="text-[9px] font-bold text-slate-600">휴대폰 번호</div><div className="text-[8px] text-slate-400">010-****-****</div></div><span className="text-slate-300 text-[10px]">›</span></div><div className="rounded-lg border border-slate-100 px-2 py-1.5 flex items-center justify-between"><div><div className="text-[9px] font-bold text-slate-600">학교/학년</div><div className="text-[8px] text-slate-400">콴다고등학교 2학년</div></div><span className="text-slate-300 text-[10px]">›</span></div></div></MiniScreen>);
     case "support": return (<MiniScreen label="고객센터"><div className="space-y-1.5"><div className="rounded-lg p-2 flex items-center gap-2" style={{backgroundColor:BRAND_SOFT}}><span className="text-sm">💬</span><div><div className="text-[9px] font-bold text-slate-700">채팅 문의</div><div className="text-[8px] text-slate-400">평일 10~20시 · 주말·공휴일 10~18시</div></div></div><div className="rounded-lg p-2 flex items-center gap-2" style={{backgroundColor:PANEL}}><span className="text-sm">📞</span><div><div className="text-[9px] font-bold text-slate-700">전화 02-6956-9243</div><div className="text-[8px] text-slate-400">평일 10~20시 · 주말·공휴일 휴무</div></div></div></div></MiniScreen>);
     case "addsubject": return (<MiniScreen label="수강 과목"><div className="space-y-1.5"><div className="rounded-lg border border-slate-100 px-2 py-1.5 flex items-center gap-2"><span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px]" style={{backgroundColor:PANEL}}>📐</span><span className="text-[10px] font-bold text-slate-700">중등 수학</span><span className="ml-auto text-[8px] text-slate-400">수강 중</span></div><div className="rounded-lg border border-slate-100 px-2 py-1.5 flex items-center gap-2"><span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px]" style={{backgroundColor:PANEL}}>📖</span><span className="text-[10px] font-bold text-slate-700">중등 국어</span><span className="ml-auto text-[8px] text-slate-400">수강 중</span></div><div className="rounded-lg border-2 border-dashed px-2 py-1.5 flex items-center gap-2" style={{borderColor:BRAND}}><span className="w-5 h-5 rounded-md flex items-center justify-center text-white text-sm" style={{backgroundColor:BRAND}}>+</span><span className="text-[10px] font-bold" style={{color:BRAND}}>과목 추가하기</span></div></div><div className="text-[8px] text-slate-400 text-center mt-1.5">새 과목은 고객센터로 신청해요</div></MiniScreen>);
+    case "changeaccount": return (<MiniScreen label="계정 변경"><div className="flex items-center justify-center gap-2 py-2"><div className="flex flex-col items-center"><div className="w-9 h-9 rounded-full flex items-center justify-center" style={{backgroundColor:PANEL}}><span className="text-base">📱</span></div><span className="text-[7px] text-slate-400 mt-0.5">휴대폰 1개</span></div><span className="text-slate-300">=</span><div className="flex flex-col items-center"><div className="w-9 h-9 rounded-full flex items-center justify-center" style={{backgroundColor:BRAND_SOFT}}><span className="text-base">👤</span></div><span className="text-[7px] text-slate-400 mt-0.5">계정 1개</span></div></div><div className="rounded-lg p-1.5 text-center" style={{backgroundColor:WARN_SOFT}}><span className="text-[8px] font-bold" style={{color:"#B45309"}}>인증 정보 초기화는 고객센터 문의 필요</span></div></MiniScreen>);
     case "trouble": return (<MiniScreen label="고객센터 접수 필요"><div className="rounded-lg p-2.5 text-center" style={{backgroundColor:"#FDE8E8"}}><span className="text-lg">⚠️</span><div className="text-[10px] font-bold mt-1" style={{color:"#C0392B"}}>선생님 노쇼·지연은 꼭 접수</div></div></MiniScreen>);
     default: return <div className="w-full h-24 rounded-xl" style={{ backgroundColor: PANEL }} />;
   }
@@ -490,7 +491,7 @@ const categories = [
         { t: "[신청서 작성하기]를 눌러 변경 신청서를 작성하면 재매칭이 접수돼요." }] },
       { heading: "재매칭은 어떻게 진행되나요?", illus: "rematch_progress", kw: "선생님 변경 재매칭 진행 새 선생님 기간 규정 차감",
         points: [
-        { t: "영업일 기준 3일 이내 새로운 선생님을 매칭해 드려요." },
+        { t: "영업일 기준 3일 이내 새 선생님을 매칭해 드려요." },
         { t: "지금까지의 수업 기록과 학습 리포트는 그대로 남아 새 선생님이 이어받아요." },
         { t: "24시간 이내 수업이 예정되어 있을 경우 수업 차감 후 선생님 변경이 가능해요.", warn: true },
         { t: "변경 후 이전 선생님과 다시 매칭은 어려워요. 신중하게 결정해 주세요.", warn: true }] },
@@ -531,12 +532,12 @@ const categories = [
       { heading: "환불은 어떻게 진행되나요?", illus: "refund", kw: "환불 취소 쿠폰 정가 수강료 반환",
         points: [
         { t: "아직 시작하지 않은 수업은 전액 환불돼요." },
-        { t: "이미 일부 수업을 들은 경우 남은 횟수만큼 환불해 드려요." },
+        { t: "이미 일부 수업을 들은 경우 남은 횟수만큼 환불해드려요." },
         { t: "24시간 이내 시작되는 수업이 예정되어 있으면 해당 회차를 차감한 뒤 환불돼요.", warn: true },
         { t: "할인 쿠폰 등을 사용했다면 수강료 정가를 기준으로 환불 처리돼요.", warn: true },
         { t: "환불 신청은 고객센터를 통해 접수해 주세요.", help: true }] },
     ] },
-  { id: "classroom", title: "수업장 활용 / 오류", emoji: "🖥️", badge: "수업장", sub: ["자료 활용", "필기 도구", "소리/화면 오류"],
+  { id: "classroom", title: "수업장 활용 & 오류", emoji: "🖥️", badge: "수업장", sub: ["자료 활용", "필기 도구", "소리/화면 오류"],
     kw: "수업장 자료 불러오기 새 페이지 파일 업로드 필기 펜 도형 텍스트 지우개 색상 소리 화면 접속 오류 끊김 캡처 녹화",
     intro: "수업장에서 자료와 도구를 활용하는 방법, 소리·화면·접속 오류 해결법을 알아보세요.",
     blocks: [
@@ -556,14 +557,19 @@ const categories = [
         { t: "소리·화면이 끊기면 와이파이를 다시 연결하고 다른 앱을 종료해 주세요." },
         { t: "그래도 해결되지 않으면 지금 발생한 화면을 캡처하거나 화면 녹화해서 고객센터로 문의해 주세요.", help: true }] },
     ] },
-  { id: "device", title: "기기 반납 & 계정", emoji: "📦", badge: "기기·계정", sub: ["개인정보 수정", "기기 반납"],
-    kw: "개인정보 수정 휴대폰 번호 학교 학년 계정 기기 반납 태블릿 아이패드 갤럭시탭 초기화 회수 구성품",
-    intro: "개인정보 수정과 대여 기기 반납 방법을 안내해드려요.",
+  { id: "device", title: "기기 반납 & 계정", emoji: "📦", badge: "기기·계정", sub: ["개인정보 수정", "계정 변경", "기기 반납"],
+    kw: "개인정보 수정 휴대폰 번호 학교 학년 계정 변경 기기 반납 태블릿 아이패드 갤럭시탭 초기화 회수 구성품",
+    intro: "개인정보 수정, 계정 변경, 대여 기기 반납 방법을 안내해드려요.",
     blocks: [
       { heading: "개인정보를 수정하고 싶어요.", illus: "account", kw: "개인정보 수정 휴대폰 번호 학교 학년 이름 계정 정보",
         points: [
         { t: "마이 페이지 > 상단의 학습자 이름을 선택해 주세요." },
         { t: "휴대폰 번호, 학교/학년 정보를 수정할 수 있어요." }] },
+      { heading: "계정을 변경하고 싶어요.", illus: "changeaccount", kw: "계정 변경 휴대폰 번호 변경 인증 초기화 다른 계정 로그인 바꾸기",
+        points: [
+        { t: "콴다과외는 휴대폰 번호 1개당 계정 1개만 등록할 수 있어요.", lead: true },
+        { t: "계정을 변경하려면 먼저 고객센터로 연락해 휴대폰 인증 정보를 초기화해야 할 수 있어요.", help: true },
+        { t: "인증 정보가 초기화되면, 첫 수업 전 가이드의 [수업 찾기]로 결제한 계정의 휴대폰 번호를 인증해 수업을 가져오면 돼요." }] },
       { heading: "대여한 기기를 반납하고 싶어요.", kw: "기기 반납 태블릿 아이패드 갤럭시탭 초기화 회수 구성품 포장 반납하기",
         points: [
         { t: "다음과 같은 경우 대여 기기 반납을 위해 고객센터로 접수해 주세요.", lead: true },
@@ -807,7 +813,7 @@ export default function HelpCenter() {
         <div className="mt-10 bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
           <h2 className="text-base font-bold text-slate-900 mb-3">더 궁금한 점이 있나요?</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <a href="https://qanda-tutoring.channel.io/" target="_blank" rel="noopener noreferrer" className="rounded-xl p-4 block transition hover:opacity-90" style={{ backgroundColor: BRAND_SOFT }}>
+            <a href="https://tutor.qanda.ai/" target="_blank" rel="noopener noreferrer" className="rounded-xl p-4 block transition hover:opacity-90" style={{ backgroundColor: BRAND_SOFT }}>
               <div className="flex items-center gap-2 mb-2"><MessageCircle className="w-5 h-5" style={{ color: BRAND }} /><span className="font-semibold text-slate-900 text-sm">채팅 문의</span><ExternalLink className="w-3.5 h-3.5 ml-auto" style={{ color: BRAND }} /></div>
               <p className="text-xs text-slate-700 leading-relaxed">평일 10:00 ~ 20:00<br />주말·공휴일 10:00 ~ 18:00</p>
             </a>
