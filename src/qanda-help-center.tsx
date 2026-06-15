@@ -490,7 +490,7 @@ const categories = [
         { t: "[신청서 작성하기]를 눌러 변경 신청서를 작성하면 재매칭이 접수돼요." }] },
       { heading: "재매칭은 어떻게 진행되나요?", illus: "rematch_progress", kw: "선생님 변경 재매칭 진행 새 선생님 기간 규정 차감",
         points: [
-        { t: "영업일 기준 3일 이내 새 선생님을 매칭해 드려요." },
+        { t: "영업일 기준 3일 이내 새로운 선생님을 매칭해 드려요." },
         { t: "지금까지의 수업 기록과 학습 리포트는 그대로 남아 새 선생님이 이어받아요." },
         { t: "24시간 이내 수업이 예정되어 있을 경우 수업 차감 후 선생님 변경이 가능해요.", warn: true },
         { t: "변경 후 이전 선생님과 다시 매칭은 어려워요. 신중하게 결정해 주세요.", warn: true }] },
@@ -531,7 +531,7 @@ const categories = [
       { heading: "환불은 어떻게 진행되나요?", illus: "refund", kw: "환불 취소 쿠폰 정가 수강료 반환",
         points: [
         { t: "아직 시작하지 않은 수업은 전액 환불돼요." },
-        { t: "이미 일부 수업을 들은 경우 남은 횟수만큼 환불해드려요." },
+        { t: "이미 일부 수업을 들은 경우 남은 횟수만큼 환불해 드려요." },
         { t: "24시간 이내 시작되는 수업이 예정되어 있으면 해당 회차를 차감한 뒤 환불돼요.", warn: true },
         { t: "할인 쿠폰 등을 사용했다면 수강료 정가를 기준으로 환불 처리돼요.", warn: true },
         { t: "환불 신청은 고객센터를 통해 접수해 주세요.", help: true }] },
@@ -807,7 +807,7 @@ export default function HelpCenter() {
         <div className="mt-10 bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
           <h2 className="text-base font-bold text-slate-900 mb-3">더 궁금한 점이 있나요?</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <a href="https://tutor.qanda.ai/" target="_blank" rel="noopener noreferrer" className="rounded-xl p-4 block transition hover:opacity-90" style={{ backgroundColor: BRAND_SOFT }}>
+            <a href="https://qanda-tutoring.channel.io/" target="_blank" rel="noopener noreferrer" className="rounded-xl p-4 block transition hover:opacity-90" style={{ backgroundColor: BRAND_SOFT }}>
               <div className="flex items-center gap-2 mb-2"><MessageCircle className="w-5 h-5" style={{ color: BRAND }} /><span className="font-semibold text-slate-900 text-sm">채팅 문의</span><ExternalLink className="w-3.5 h-3.5 ml-auto" style={{ color: BRAND }} /></div>
               <p className="text-xs text-slate-700 leading-relaxed">평일 10:00 ~ 20:00<br />주말·공휴일 10:00 ~ 18:00</p>
             </a>
