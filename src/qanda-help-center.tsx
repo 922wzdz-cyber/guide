@@ -321,7 +321,6 @@ function WeekRow({ plan }) {
 }
 function Row({ t }) { return <div className="text-[10px] text-slate-600 py-0.5">· {t}</div>; }
 function Bar({ w }) { return <div className="h-1.5 rounded-full my-1" style={{ width: w, backgroundColor: "#E2E6EC" }} />; }
-function Btn({ t }) { return <div className="text-[10px] font-bold text-white rounded-md py-1.5 text-center mt-1" style={{ backgroundColor: BRAND }}>{t}</div>; }
 
 
 const steps = [
@@ -619,60 +618,71 @@ const categories = [
     ] },
 ];
 
+/* ---------- 검색: 띄어쓰기 무시 매칭 ----------
+   - 검색어와 본문 양쪽에서 공백을 모두 제거하고 비교하므로
+     "시간변경"과 "시간 변경"이 동일하게 잡힘.
+   - 제목(head) > 키워드(kw) > 본문(body) 순으로 가중치를 둠.
+   - strong(제목·키워드 직접 매칭)이 하나라도 있으면 그쪽만 노출. */
 function searchBlocks(query) {
-  const q = query.toLowerCase().trim();
-  if (!q) return [];
-  const tokens = q.split(/\s+/).filter(Boolean);
+  const raw = query.trim();
+  if (!raw) return [];
+
+  const norm = (s) => (s || "").toLowerCase().replace(/\s+/g, "");
+  const qn = norm(raw);                                          // 공백 제거 전체 검색어
+  const tokens = raw.toLowerCase().split(/\s+/).map(norm).filter(Boolean);
+
   const rows = [];
-  // 첫 수업 전 가이드(steps) 검색
+
+  const consider = (head, kw, body, base) => {
+    const headN = norm(head);
+    const kwN = norm(kw);
+    const bodyN = norm(body);
+    const strongN = headN + "|" + kwN;        // | = 영역 경계(가짜 매칭 방지)
+    const allN = strongN + "|" + bodyN;
+
+    // 검색어 전체가 통째로 들어가거나, 띄어 친 토큰이 모두 들어가면 매칭
+    const matched = allN.includes(qn) || tokens.every((t) => allN.includes(t));
+    if (!matched) return;
+    const strong = strongN.includes(qn) || tokens.every((t) => strongN.includes(t));
+
+    let score = 0;
+    if (headN.includes(qn)) score += 200;
+    if (kwN.includes(qn)) score += 140;
+    if (bodyN.includes(qn)) score += 30;
+    tokens.forEach((t) => {
+      if (headN.includes(t)) score += 25;
+      if (kwN.includes(t)) score += 15;
+      if (bodyN.includes(t)) score += 4;
+    });
+
+    rows.push({ ...base, score, strong });
+  };
+
+  // 첫 수업 전 가이드(steps)
   steps.forEach((s, si) => {
-    const head = s.title.toLowerCase();
-    const skw = (s.kw || "").toLowerCase();
     const slideText = s.slides.map((sl) => {
       const tt = sl.title.map((seg) => seg.t).join("");
       const pts = (sl.points || []).map((p) => p.t).join(" ");
       const ok = (sl.ok || []).join(" ");
       const no = (sl.no || []).join(" ");
       return tt + " " + pts + " " + ok + " " + no;
-    }).join(" ").toLowerCase();
-    const strongHay = head + " " + skw;
-    const allHay = strongHay + " " + slideText;
-    if (!tokens.every((t) => allHay.includes(t))) return;
-    const strong = tokens.every((t) => strongHay.includes(t));
-    let score = 0;
-    if (head.includes(q) || skw.includes(q)) score += 200;
-    tokens.forEach((t) => {
-      if (head.includes(t)) score += 25;
-      if (skw.includes(t)) score += 15;
-      if (slideText.includes(t)) score += 4;
+    }).join(" ");
+    consider(s.title, s.kw || "", slideText, {
+      type: "step", si, title: s.title, sub: "첫 수업 전 가이드 · STEP " + (si + 1), emoji: s.emoji,
     });
-    rows.push({ type: "step", si, title: s.title, sub: "첫 수업 전 가이드 · STEP " + (si + 1), emoji: s.emoji, score, strong });
   });
-  // 이용 가이드(categories) 검색
+
+  // 이용 가이드(categories)
   categories.forEach((cat) => {
     cat.blocks.forEach((b, bi) => {
-      const head = b.heading.toLowerCase();
-      const bkw = (b.kw || "").toLowerCase();
-      const pts = b.points.map((p) => p.t).join(" ").toLowerCase();
-      const ckw = (cat.kw || "").toLowerCase();
-      const ctitle = cat.title.toLowerCase();
-      const csub = cat.sub.join(" ").toLowerCase();
-      const strongHay = head + " " + bkw;
-      const allHay = strongHay + " " + pts + " " + ckw + " " + ctitle + " " + csub;
-      if (!tokens.every((t) => allHay.includes(t))) return;
-      const strong = tokens.every((t) => strongHay.includes(t));
-      let score = 0;
-      if (head.includes(q)) score += 200;
-      if (bkw.includes(q)) score += 140;
-      tokens.forEach((t) => {
-        if (head.includes(t)) score += 25;
-        if (bkw.includes(t)) score += 15;
-        if (pts.includes(t)) score += 4;
-        if (ckw.includes(t) || ctitle.includes(t)) score += 2;
+      const pts = b.points.map((p) => p.t).join(" ");
+      const body = pts + " " + (cat.kw || "") + " " + cat.title + " " + cat.sub.join(" ");
+      consider(b.heading, b.kw || "", body, {
+        type: "block", cat, bi, title: b.heading, sub: cat.title, emoji: cat.emoji,
       });
-      rows.push({ type: "block", cat, bi, title: b.heading, sub: cat.title, emoji: cat.emoji, score, strong });
     });
   });
+
   const hasStrong = rows.some((r) => r.strong);
   const filtered = hasStrong ? rows.filter((r) => r.strong) : rows;
   return filtered.sort((a, b) => b.score - a.score).slice(0, 15);
@@ -754,7 +764,7 @@ export default function HelpCenter() {
           </div>
         ) : activeCat ? (
           <div>
-            <button onClick={openQ !== null ? () => setOpenQ(null) : goHome} className="inline-flex items-center gap-1 text-sm text-slate-600 hover:text-slate-900 mb-4 transition"><ChevronLeft className="w-4 h-4" /> {openQ !== null ? "질문 목록으로" : "전체 항목으로"}</button>
+            <button onClick={goHome} className="inline-flex items-center gap-1 text-sm text-slate-600 hover:text-slate-900 mb-4 transition"><ChevronLeft className="w-4 h-4" /> 전체 항목으로</button>
             <div className="rounded-3xl p-6 mb-5 bg-white border border-slate-200">
               <span className="inline-block text-xs font-bold px-3 py-1 rounded-full mb-3" style={{ backgroundColor: BRAND_SOFT, color: BRAND }}>{activeCatData.badge} ✅</span>
               <div className="flex items-center gap-3">
@@ -765,19 +775,20 @@ export default function HelpCenter() {
                 </div>
               </div>
             </div>
-            {openQ === null ? (
-              <div className="space-y-2.5">
-                {activeCatData.blocks.map((b, i) => (
-                  <button key={i} onClick={() => setOpenQ(i)} className="w-full flex items-center justify-between gap-3 bg-white rounded-2xl border border-slate-200 shadow-sm px-5 py-4 text-left transition hover:shadow-md"
-                    onMouseEnter={(e) => (e.currentTarget.style.borderColor = BRAND)} onMouseLeave={(e) => (e.currentTarget.style.borderColor = "")}>
-                    <span className="font-bold text-slate-800 text-sm sm:text-base">{b.heading}</span>
-                    <ChevronRight className="w-5 h-5 text-slate-300 flex-shrink-0" />
-                  </button>
-                ))}
-              </div>
-            ) : (
-              <QSlide b={activeCatData.blocks[openQ]} />
-            )}
+            <div className="space-y-2.5">
+              {activeCatData.blocks.map((b, i) => {
+                const open = openQ === i;
+                return (
+                  <div key={i} className="bg-white rounded-2xl shadow-sm overflow-hidden transition" style={{ border: open ? `2px solid ${BRAND}` : "2px solid transparent" }}>
+                    <button onClick={() => setOpenQ(open ? null : i)} className="w-full flex items-center justify-between gap-3 px-5 py-4 text-left">
+                      <span className="font-bold text-slate-800 text-sm sm:text-base">{b.heading}</span>
+                      <ChevronDown className={`w-5 h-5 text-slate-400 flex-shrink-0 transition-transform ${open ? "rotate-180" : ""}`} />
+                    </button>
+                    {open && <div className="px-3 pb-4 pt-1"><QSlide b={b} embedded /></div>}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         ) : (
           <>
@@ -916,7 +927,7 @@ function CatCard({ c, onClick }) {
   );
 }
 
-function QSlide({ b }) {
+function QSlide({ b, embedded }) {
   return (
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
       {b.illus && (
@@ -926,7 +937,7 @@ function QSlide({ b }) {
         </div>
       )}
       <div className="p-5">
-        <h4 className="text-base sm:text-lg font-extrabold text-slate-900 mb-3 leading-snug">{b.heading}</h4>
+        {!embedded && <h4 className="text-base sm:text-lg font-extrabold text-slate-900 mb-3 leading-snug">{b.heading}</h4>}
         {b.points.filter((p) => p.lead).map((p, i) => (
           <p key={i} className="text-sm font-bold mb-3 leading-relaxed" style={{ color: BRAND }}>{p.t}</p>
         ))}
