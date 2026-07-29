@@ -1,5 +1,6 @@
 import { useState, useMemo, useRef, Fragment } from "react";
 import { Search, ChevronDown, ChevronLeft, ChevronRight, MessageCircle, Phone, Clock, Lightbulb, AlertTriangle, Check, ExternalLink, MousePointer2, Hand, Pencil, Square, Eraser, Type, Plus, Undo2 } from "lucide-react";
+import { Analytics } from '@vercel/analytics/react';
 
 const BRAND = "#F25C05";
 const BRAND_SOFT = "#FFF1EA";
@@ -111,7 +112,7 @@ function Mock({ name }) {
     );
     case "timetable": return (
       <div className={wrap} style={{ maxWidth: 280, margin: "0 auto" }}>
-        <div className="px-2.5 py-1.5 text-[10px] font-bold text-slate-700">수업 가능한 요일·시간 선택</div>
+        <div className="px-2.5 py-1.5 text-[10px] font-bold text-slate-700">수업 가능한 요일·���간 선택</div>
         <div className="px-2.5 pb-2.5">
           <div className="grid grid-cols-8 gap-px text-[8px]">
             <div></div>{["월","화","수","목","금","토","일"].map(d => <div key={d} className="text-center text-slate-500 font-bold pb-0.5">{d}</div>)}
@@ -377,10 +378,10 @@ const steps = [
         "다락원 교재 (다락원 마스터, 다락원 뉴코스 등)",
         "비상교육 교재 (만렙, 오투, 완자 등)",
         "에듀원 교재 (백발백중 등)",
-        "절판 도서 등 현 시점 기준 인터넷 서점에서 구매 불가한 교재",
-        "부록 교재",
+        "절판 도서 등 현 시점 기준 인터넷 ���점에서 구매 불가한 교재",
+        "부��� 교재",
         "전과목 세트 상품으로 출시된 교재는 세트 내 한 과목만 신청 불가",
-        "개념원리, 능률, 쎄듀, 지학사, 키출판사, 마더텅 교재는 일부 교재만 신청 가능",
+        "개념원리, 능률, ��듀, 지학사, 키출판사, 마더텅 교재는 일부 ��재만 신청 가능",
       ],
       points: [] },
     { illus: "booksearch", title: [{ t: "교재 검색기로 " }, { t: "확인", b: true }, { t: "해요." }], points: [
@@ -427,7 +428,7 @@ const categories = [
         { t: "'수업' 화면의 [학습리포트] 버튼을 눌러 확인해 보세요." },
         { t: "학부모님도 함께 확인할 수 있어요." },
         { t: "리포트가 보이지 않으면 고객센터로 문의해 주세요.", help: true }] },
-      { heading: "자료실은 어디서 확인하나요?", illus: "library_book", illus2: "library", kw: "자료실 교재 콴다 컨텐츠 합격생기부 생기부 자료",
+      { heading: "자료실은 어디서 확인하나요?", illus: "library_book", illus2: "library", kw: "자료실 교재 ��다 컨텐츠 합격생기부 생기부 자료",
         points: [
         { t: "등록한 교재나 콴다 컨텐츠를 찾고 계신가요?", lead: true },
         { t: "앱 하단의 [자료실]에 접속하면 교재와 콴다 컨텐츠를 볼 수 있어요." },
@@ -462,7 +463,7 @@ const categories = [
     ] },
   { id: "schedule", title: "수업 일정 관리", emoji: "📅", badge: "수업 일정", sub: ["일정 변경", "수업 결석", "일시 중단"],
     kw: "일정 변경 수업 시간 변경 시각 날짜 조정 결석 무단결석 휴강 홀딩 중단",
-    intro: "수업 일정을 변경하거나, 수업을 잠시 중단하는 방법을 알아보세요.",
+    intro: "수업 일정을 변경하거나, 수업을 잠시 ��단하는 방법을 알아보세요.",
     blocks: [
       { heading: "수업 일정을 변경하고 싶어요.", illus: "schedule_pull", kw: "수업 일정 변경 시간 시각 날짜 요일 조정",
         points: [
@@ -540,11 +541,11 @@ const categories = [
     kw: "수업장 자료 불러오기 새 페이지 파일 업로드 필기 펜 도형 텍스트 지우개 색상 소리 화면 접속 오류 끊김 캡처 녹화",
     intro: "수업장에서 자료와 도구를 활용하는 방법, 소리·화면·접속 오류 해결법을 알아보세요.",
     blocks: [
-      { heading: "수업 중 자료를 불러오고 싶어요.", illus: "material", kw: "수업장 자료 불러오기 새 페이지 줄 격자 파일 업로드 파일 관리자",
+      { heading: "수업 중 자료를 불러오고 싶어요.", illus: "material", kw: "수업장 자료 불러오기 새 페이�� 줄 격자 파일 업로드 파일 관리자",
         points: [
         { t: "수업장 왼쪽 위 [+] 버튼을 눌러주세요." },
-        { t: "[새 페이지], [줄 및 격자 페이지]를 추가할 수 있어요." },
-        { t: "[파일 업로드], [파일 관리자 열기]로 필요한 자료를 불러올 수 있어요." }] },
+        { t: "[새 페이지], [줄 및 격자 페이지]�� 추가할 수 있어요." },
+        { t: "[파일 업로���], [파일 관리자 열기]로 필요한 자료를 불러올 수 있어요." }] },
       { heading: "필기 도구는 어떻게 쓰나요?", illus: "tools", kw: "필기 도구 펜 도형 텍스트 지우개 색상 굵기 형광펜",
         points: [
         { t: "상단 도구 모음에서 펜, 도형, 텍스트, 지우개 등 다양한 도구를 쓸 수 있어요." },
@@ -568,7 +569,7 @@ const categories = [
         points: [
         { t: "콴다과외는 휴대폰 번호 1개당 계정 1개만 등록할 수 있어요.", lead: true },
         { t: "계정을 변경하려면 먼저 고객센터로 연락해 휴대폰 인증 정보를 초기화해야 할 수 있어요.", help: true },
-        { t: "인증 정보가 초기화되면, 첫 수업 전 가이드의 [수업 찾기]로 결제한 계정의 휴대폰 번호를 인증해 수업을 가져오면 돼요." }] },
+        { t: "인증 정보가 초기화되면, 첫 수업 전 가이드의 [���업 찾기]로 결제한 계정의 휴대폰 번호를 인증해 수업을 가져오면 돼요." }] },
       { heading: "대여한 기기를 반납하고 싶어요.", kw: "기기 반납 태블릿 아이패드 갤럭시탭 초기화 회수 구성품 포장 반납하기",
         points: [
         { t: "다음과 같은 경우 대여 기기 반납을 위해 고객센터로 접수해 주세요.", lead: true },
@@ -838,6 +839,7 @@ export default function HelpCenter() {
 
         <p className="text-center text-xs text-slate-400 mt-6">찾으시는 답변이 없다면 언제든 문의해 주세요.</p>
       </div>
+      <Analytics />
     </div>
   );
 }
