@@ -818,7 +818,7 @@ export default function HelpCenter() {
 
             <div className="flex items-center gap-2 mb-1"><span className="text-xl">📖</span><h2 className="text-lg sm:text-xl font-bold text-slate-900">콴다과외 이용 가이드</h2></div>
             <p className="text-sm text-slate-600 mb-4">수업을 시작한 뒤 궁금한 점을 카테고리별로 모았어요.</p>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">{categories.map((c) => <CatCard key={c.id} c={c} onClick={() => { setActiveCat(c.id); setOpenQ(null); }} />)}</div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 items-stretch">{categories.map((c) => <CatCard key={c.id} c={c} onClick={() => { setActiveCat(c.id); setOpenQ(null); }} />)}</div>
           </>
         )}
 
@@ -919,12 +919,12 @@ function Slide({ sl }) {
 
 function CatCard({ c, onClick }) {
   return (
-    <button onClick={onClick} className="bg-white rounded-2xl p-4 sm:p-5 text-left border-2 border-transparent transition"
+    <button onClick={onClick} className="w-full h-full flex flex-col bg-white rounded-2xl p-4 sm:p-5 text-left border-2 border-transparent transition"
       onMouseEnter={(e) => { e.currentTarget.style.borderColor = BRAND; e.currentTarget.style.transform = "translateY(-2px)"; }}
       onMouseLeave={(e) => { e.currentTarget.style.borderColor = "transparent"; e.currentTarget.style.transform = ""; }}>
       <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-3" style={{ backgroundColor: BRAND_SOFT }}>{c.emoji}</div>
       <h3 className="font-bold text-slate-900 text-sm sm:text-base mb-2 leading-snug">{c.title}</h3>
-      <div className="flex flex-wrap gap-1">{c.sub.map((t) => (<span key={t} className="text-[11px] text-slate-500 rounded-full px-2 py-0.5" style={{ backgroundColor: PANEL }}>{t}</span>))}</div>
+      <div className="flex flex-wrap gap-1 mt-auto">{c.sub.map((t) => (<span key={t} className="text-[11px] text-slate-500 rounded-full px-2 py-0.5" style={{ backgroundColor: PANEL }}>{t}</span>))}</div>
     </button>
   );
 }
